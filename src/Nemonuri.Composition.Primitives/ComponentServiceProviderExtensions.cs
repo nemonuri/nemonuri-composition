@@ -4,6 +4,9 @@ using Primitives;
 
 public static class ComponentServiceProviderExtensions
 {
+    /// <summary>
+    /// Receive Service From IProvider
+    /// </summary>
     public static T? ReceiveService<TProvider, T>(this IComponentServiceProvider provider) where TProvider : IProvider<T>
     {
         var p = provider.GetService<TProvider>();
@@ -11,18 +14,17 @@ public static class ComponentServiceProviderExtensions
         return p.Get();
     }
 
-    // Receive Service From IProvider (First)
+    /// <summary>
+    /// Receive First Service From IProvider
+    /// </summary>
     public static T? ReceiveService<T>(this IComponentServiceProvider provider, Func<IProvider<T>, T, bool>? predicate = null)
     {
-        foreach(var pv in provider.GetService<IReadOnlyProviderSetDictionary>()?[typeof(T)] ?? [])
+        foreach(IProvider<T> pv in provider.GetProviderSet<T>())
         {
-            if (pv is IProvider<T> pvt)
+            T t = pv.Get();
+            if (predicate?.Invoke(pv, t) ?? true)
             {
-                T t = pvt.Get();
-                if (predicate?.Invoke(pvt, t) ?? true)
-                {
-                    return t;
-                }
+                return t;
             }
         }
         return default;
