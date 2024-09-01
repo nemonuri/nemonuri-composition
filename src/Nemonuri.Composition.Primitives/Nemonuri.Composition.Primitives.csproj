@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0;netstandard2.0</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>12</LangVersion>
+    <RootNamespace>Nemonuri.Composition</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Label="Package Metadata">
+    <Version>0.0.1</Version>
+  </PropertyGroup>
+
+  <Import Project="$(MSBuildThisFileDirectory)..\Directory.Pack.props" />
+
+  <PropertyGroup Label="Package Metadata">
+    <PackageId>Nemonuri.Composition.Primitives</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Nemonuri.Common.Primitives" Version="*" />
+  </ItemGroup>
+
+</Project>
