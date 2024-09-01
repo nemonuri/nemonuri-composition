@@ -1,13 +1,23 @@
 
 
+using System.Runtime.CompilerServices;
+
 namespace Nemonuri.Composition;
 
-internal class SampleComponentServiceProvider : IComponentServiceProvider
+#if false
+public partial class SampleComponentServiceProvider : IComponentServiceProvider
 {
     //ImmutableHashSet<T>.Builder
+
+    Dictionary<Type, Lz>
+
     public object? GetService(Type serviceType)
     {
-        throw new NotImplementedException();
+        if (serviceType == typeof(Exportables.CompA))
+        {
+            return 
+        }
+        
     }
 
     public IEnumerable<IProvider<T>> GetProviderSet<T>()
@@ -15,3 +25,12 @@ internal class SampleComponentServiceProvider : IComponentServiceProvider
         throw new NotImplementedException();
     }
 }
+
+partial class SampleComponentServiceProvider
+{
+    public static class Exportables
+    {
+        public class CompA(int value) : DefaultProvider<int>(value);
+    }
+}
+#endif
