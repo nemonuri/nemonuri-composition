@@ -6,8 +6,6 @@ namespace Nemonuri.Composition;
 public partial class SampleComponentServiceProvider : IComponentServiceProvider
 {
 
-    private readonly Dictionary<Type, Lazy<object>> _providerDictionary;
-
     public SampleComponentServiceProvider()
     {
         _providerDictionary = new ()
@@ -16,6 +14,8 @@ public partial class SampleComponentServiceProvider : IComponentServiceProvider
             {typeof(Exportables.CompB), new Lazy<object>(static () => new Exportables.CompB(2)) }
         };
     }
+
+    private readonly Dictionary<Type, Lazy<object>> _providerDictionary;
 
     private Type[]? _providerDictionaryKeys;
     private IReadOnlyList<Type> ProviderDictionaryKeys => 
@@ -87,13 +87,16 @@ public partial class SampleComponentServiceProvider : IComponentServiceProvider
 
         if (builder != null)
         {
-            psd.TryAdd(typeof(T), builder.ToImmutable());
+            ImmutableHashSet<IProvider<T>> immutableHashSet = builder.ToImmutable();
+            lock (psd)
+            {
+                psd.TryAdd(typeof(T), immutableHashSet);
+            }
+            return immutableHashSet;
         }
         
-        throw new NotImplementedException();
+        return [];
     }
-
-
 }
 
 partial class SampleComponentServiceProvider
