@@ -26,4 +26,26 @@
     <PackageReference Include="Nemonuri.Common.Primitives" Version="*" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
+    <PackageReference Include="PolySharp" Version="1.14.1">
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="System.Collections.Immutable" Version="8.0.0" />
+    <ProjectReference Include="$(MSBuildProjectDirectory)\..\Nemonuri.Composition.Primitives.NetStandard\Nemonuri.Composition.Primitives.NetStandard.csproj" 
+                      PrivateAssets="All" />
+  </ItemGroup>
+
+  <!--#region IncludeP2POutput -->
+  <!-- Reference: https://github.com/NuGet/Home/issues/3891#issuecomment-330668337 -->
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2POutput</TargetsForTfmSpecificBuildOutput>
+  </PropertyGroup>
+
+  <Target Name="IncludeP2POutput">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)Nemonuri.Composition.Primitives.NetStandard.dll" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+    </ItemGroup>
+  </Target>
+  <!--#endregion IncludeP2POutput -->
+
 </Project>

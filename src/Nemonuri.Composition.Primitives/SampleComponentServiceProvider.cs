@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Immutable;
 
 namespace Nemonuri.Composition;
 
@@ -6,7 +7,6 @@ public partial class SampleComponentServiceProvider : IComponentServiceProvider
 {
 
     private readonly Dictionary<Type, Lazy<object>> _providerDictionary;
-    private Dictionary<Type, ICollection<object>>? _providerSetDictionary;
 
     public SampleComponentServiceProvider()
     {
@@ -17,22 +17,11 @@ public partial class SampleComponentServiceProvider : IComponentServiceProvider
         };
     }
 
-    private Dictionary<Type, ICollection<object>> ProviderSetDictionary => _providerSetDictionary ??= CreateProviderSetDictionary();
+    private Type[]? _providerDictionaryKeys;
+    private IReadOnlyList<Type> ProviderDictionaryKeys => 
+        _providerDictionaryKeys ?? Interlocked.CompareExchange(ref _providerDictionaryKeys, CreateProviderDictionaryKeys(), null) ?? _providerDictionaryKeys;
 
-    private Dictionary<Type, ICollection<object>> CreateProviderSetDictionary()
-    {
-        Type[] keys = CreateKeyArray();
-
-        Dictionary<Type, ICollection<object>> result = new();
-        foreach (Type key in keys)
-        {
-            result.Add(key, Array.Empty<object>());
-        }
-
-        return result;
-    }
-
-    private Type[] CreateKeyArray()
+    private Type[] CreateProviderDictionaryKeys()
     {
         Type[] keys = new Type[_providerDictionary.Count];
         lock (_providerDictionary)
@@ -41,6 +30,15 @@ public partial class SampleComponentServiceProvider : IComponentServiceProvider
         }
 
         return keys;
+    }
+
+    private Dictionary<Type, IEnumerable>? _providerSetDictionary;
+    private Dictionary<Type, IEnumerable> ProviderSetDictionary =>
+        _providerSetDictionary ?? Interlocked.CompareExchange(ref _providerSetDictionary, CreateProviderSetDictionary(), null) ?? _providerSetDictionary;
+
+    private Dictionary<Type, IEnumerable> CreateProviderSetDictionary()
+    {
+        return new Dictionary<Type, IEnumerable>();
     }
 
     public object? GetService(Type serviceType)
@@ -53,22 +51,44 @@ public partial class SampleComponentServiceProvider : IComponentServiceProvider
             tryGetSuccessed = _providerDictionary.TryGetValue(serviceType, out outLazy);
         }
 
-        return tryGetSuccessed ? outLazy.Value : null;
+        return tryGetSuccessed ? outLazy!.Value : null;
     }
 
     public IEnumerable<IProvider<T>> GetProviderSet<T>()
     {
-        var psd = ProviderSetDictionary; // 초기화 확인
+        var psd = ProviderSetDictionary; // Ensure Initialized
 
         bool tryGetSuccessed;
-        ICollection<object>? outCollection;
+        IEnumerable? outCollection;
 
         lock (psd)
         {
             tryGetSuccessed = psd.TryGetValue(typeof(T), out outCollection);
         }
 
-        if (outCollection.Count == 0) {}
+        if (tryGetSuccessed && outCollection is IEnumerable<IProvider<T>> vProviders)
+        {
+            return vProviders;
+        }
+
+        ImmutableHashSet<IProvider<T>>.Builder? builder = null;
+        foreach (Type key in ProviderDictionaryKeys)
+        {
+            if 
+            (
+                typeof(IProvider<T>).IsAssignableFrom(key) &&
+                _providerDictionary[key].Value is IProvider<T> vProvider
+            )
+            {
+                builder ??= ImmutableHashSet.CreateBuilder<IProvider<T>>();
+                builder.Add(vProvider);
+            }
+        }
+
+        if (builder != null)
+        {
+            psd.TryAdd(typeof(T), builder.ToImmutable());
+        }
         
         throw new NotImplementedException();
     }

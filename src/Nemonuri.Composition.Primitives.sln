@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nemonuri.Composition.Primitives", "Nemonuri.Composition.Primitives\Nemonuri.Composition.Primitives.csproj", "{3D019A27-5119-4575-8C8B-394C5A1D5FF7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nemonuri.Composition.Primitives.NetStandard", "Nemonuri.Composition.Primitives.NetStandard\Nemonuri.Composition.Primitives.NetStandard.csproj", "{744F6F74-D64D-4142-941E-86790E1D189F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{3D019A27-5119-4575-8C8B-394C5A1D5FF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D019A27-5119-4575-8C8B-394C5A1D5FF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D019A27-5119-4575-8C8B-394C5A1D5FF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{744F6F74-D64D-4142-941E-86790E1D189F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{744F6F74-D64D-4142-941E-86790E1D189F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{744F6F74-D64D-4142-941E-86790E1D189F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{744F6F74-D64D-4142-941E-86790E1D189F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
