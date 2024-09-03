@@ -7,8 +7,10 @@ public static class ComponentServiceProviderExtensions
     /// <summary>
     /// Receive Service From IProvider
     /// </summary>
-    public static T? ReceiveService<TProvider, T>(this IComponentServiceProvider provider) where TProvider : IProvider<T>
+    public static T? ReceiveService<TProvider, T>(this IComponentServiceProvider provider) where TProvider : IContractableProvider<T>
     {
+        Guard.IsNotNull(provider);
+
         var p = provider.GetService<TProvider>();
         if (p == null) {return default;};
         return p.Get();
@@ -17,14 +19,44 @@ public static class ComponentServiceProviderExtensions
     /// <summary>
     /// Receive First Service From IProvider
     /// </summary>
-    public static T? ReceiveService<T>(this IComponentServiceProvider provider, Func<IProvider<T>, T, bool>? predicate = null)
+    public static T? ReceiveService<T>(this IComponentServiceProvider provider, Func<IContractableProvider<T>, bool>? predicate = null)
     {
-        foreach(IProvider<T> pv in provider.GetProviderSet<T>())
+        Guard.IsNotNull(provider);
+
+        foreach(IContractableProvider<T> pv in provider.GetProviderSet<T>())
         {
-            T t = pv.Get();
-            if (predicate?.Invoke(pv, t) ?? true)
+            if (predicate?.Invoke(pv) ?? true)
             {
-                return t;
+                return pv.Get();
+            }
+        }
+        return default;
+    }
+
+    public static T? ReceiveService<T, TContract>(this IComponentServiceProvider provider, TContract contract, IEqualityComparer<TContract>? equalityComparer = null)
+    {
+        Guard.IsNotNull(provider);
+        Guard.IsNotNull(contract);
+
+        foreach(IContractableProvider<T> pv in provider.GetProviderSet<T>())
+        {
+            if (equalityComparer == null)
+            {
+                if (contract.Equals(pv.Contract))
+                {
+                    return pv.Get();
+                }
+            }
+            else
+            {
+                if 
+                (
+                    pv.Contract is TContract vContract &&
+                    equalityComparer.Equals(contract, vContract)
+                )
+                {
+                    return pv.Get();
+                }
             }
         }
         return default;

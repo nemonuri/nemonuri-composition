@@ -3,6 +3,8 @@ using System.Collections.Immutable;
 
 namespace Nemonuri.Composition;
 
+using Primitives;
+
 public partial class SampleComponentServiceProvider : IComponentServiceProvider
 {
 
@@ -54,7 +56,7 @@ public partial class SampleComponentServiceProvider : IComponentServiceProvider
         return tryGetSuccessed ? outLazy!.Value : null;
     }
 
-    public IEnumerable<IProvider<T>> GetProviderSet<T>()
+    public IEnumerable<IContractableProvider<T>> GetProviderSet<T>()
     {
         var psd = ProviderSetDictionary; // Ensure Initialized
 
@@ -66,28 +68,28 @@ public partial class SampleComponentServiceProvider : IComponentServiceProvider
             tryGetSuccessed = psd.TryGetValue(typeof(T), out outCollection);
         }
 
-        if (tryGetSuccessed && outCollection is IEnumerable<IProvider<T>> vProviders)
+        if (tryGetSuccessed && outCollection is IEnumerable<IContractableProvider<T>> vProviders)
         {
             return vProviders;
         }
 
-        ImmutableHashSet<IProvider<T>>.Builder? builder = null;
+        ImmutableHashSet<IContractableProvider<T>>.Builder? builder = null;
         foreach (Type key in ProviderDictionaryKeys)
         {
             if 
             (
-                typeof(IProvider<T>).IsAssignableFrom(key) &&
-                _providerDictionary[key].Value is IProvider<T> vProvider
+                typeof(IContractableProvider<T>).IsAssignableFrom(key) &&
+                GetService(key) is IContractableProvider<T> vProvider
             )
             {
-                builder ??= ImmutableHashSet.CreateBuilder<IProvider<T>>();
+                builder ??= ImmutableHashSet.CreateBuilder<IContractableProvider<T>>();
                 builder.Add(vProvider);
             }
         }
 
         if (builder != null)
         {
-            ImmutableHashSet<IProvider<T>> immutableHashSet = builder.ToImmutable();
+            ImmutableHashSet<IContractableProvider<T>> immutableHashSet = builder.ToImmutable();
             lock (psd)
             {
                 psd.TryAdd(typeof(T), immutableHashSet);
@@ -103,7 +105,7 @@ partial class SampleComponentServiceProvider
 {
     public static class Exportables
     {
-        public class CompA(int value) : DefaultProvider<int>(value);
-        public class CompB(int value) : DefaultProvider<int>(value);
+        public class CompA(int value) : DefaultContractableProvider<int>(value);
+        public class CompB(int value) : DefaultContractableProvider<int>(value, "CompB");
     }
 }
