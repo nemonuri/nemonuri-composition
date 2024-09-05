@@ -1,4 +1,4 @@
-namespace Nemonuri.Composition.Primitives;
+namespace Nemonuri.Composition;
 
 public class DefaultContractableProvider<T> : IContractableProvider<T>
 {

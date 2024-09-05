@@ -10,7 +10,10 @@ public class DefaultComponentServiceReceiver<T> : IComponentServiceReceiver<T, o
 
 public class DefaultComponentServiceReceiver<T, TContract> : IComponentServiceReceiver<T, TContract>
 {
-    public DefaultComponentServiceReceiver(TContract? contract, IEqualityComparer<TContract>? contractEqualityComparer)
+    public DefaultComponentServiceReceiver(): this(default, null)
+    {}
+
+    public DefaultComponentServiceReceiver(TContract? contract, IEqualityComparer<TContract>? contractEqualityComparer = null)
     {
         Contract = contract;
         ContractEqualityComparer = contractEqualityComparer;

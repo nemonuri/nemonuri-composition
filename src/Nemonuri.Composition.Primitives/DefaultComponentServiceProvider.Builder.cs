@@ -48,6 +48,5 @@ partial class DefaultComponentServiceProvider
 
         public DefaultComponentServiceProvider Build() =>
             new DefaultComponentServiceProvider(_providerDictionary);
-       
     }
 }
