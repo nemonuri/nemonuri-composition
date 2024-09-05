@@ -1,7 +1,5 @@
 namespace Nemonuri.Composition;
 
-using Primitives;
-
 public static class ComponentServiceProviderExtensions
 {
     /// <summary>
@@ -19,7 +17,7 @@ public static class ComponentServiceProviderExtensions
     /// <summary>
     /// Receive First Service From IProvider
     /// </summary>
-    public static T? ReceiveService<T>(this IComponentServiceProvider provider, Func<IContractableProvider<T>, bool>? predicate = null)
+    public static T? ReceiveService<T>(this IComponentServiceProvider provider, Func<IContractableProvider<T>, bool>? predicate)
     {
         Guard.IsNotNull(provider);
 
@@ -33,13 +31,17 @@ public static class ComponentServiceProviderExtensions
         return default;
     }
 
-    public static T? ReceiveService<T, TContract>(this IComponentServiceProvider provider, TContract contract, IEqualityComparer<TContract>? equalityComparer = null)
+    public static T? ReceiveService<T, TContract>(this IComponentServiceProvider provider, TContract? contract, IEqualityComparer<TContract>? equalityComparer = null)
     {
         Guard.IsNotNull(provider);
-        Guard.IsNotNull(contract);
 
         foreach(IContractableProvider<T> pv in provider.GetProviderSet<T>())
         {
+            if (contract == null)
+            {
+                return pv.Get();
+            }
+
             if (equalityComparer == null)
             {
                 if (contract.Equals(pv.Contract))
@@ -63,6 +65,8 @@ public static class ComponentServiceProviderExtensions
                 }
             }
         }
+
         return default;
     }
 }
+
