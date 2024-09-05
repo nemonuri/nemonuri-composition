@@ -46,6 +46,10 @@ public static class ComponentServiceProviderExtensions
                 {
                     return pv.Get();
                 }
+                else if (pv.Contract is IEquatable<TContract> equatable && equatable.Equals(contract))
+                {
+                    return pv.Get();
+                }
             }
             else
             {
