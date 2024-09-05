@@ -8,7 +8,7 @@ using Primitives;
 public partial class DefaultComponentServiceProvider : IComponentServiceProvider
 {
     public static Builder CreateBuilder() => new ();
-        
+
     private readonly Dictionary<Type, Lazy<object>> _providerDictionary;
 
     private DefaultComponentServiceProvider(Dictionary<Type, Lazy<object>> providerDictionary)
@@ -16,6 +16,8 @@ public partial class DefaultComponentServiceProvider : IComponentServiceProvider
         Guard.IsNotNull(providerDictionary);
         _providerDictionary = providerDictionary;
     }
+
+    public Builder ToBuilder() => new Builder(_providerDictionary);
 
     private Type[]? _providerDictionaryKeys;
     private IReadOnlyList<Type> ProviderDictionaryKeys => 
