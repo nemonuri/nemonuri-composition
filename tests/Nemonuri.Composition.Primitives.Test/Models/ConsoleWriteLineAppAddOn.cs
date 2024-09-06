@@ -28,7 +28,7 @@ public partial class ConsoleWriteLineAppAddOn : IComponentServiceProvider
             ;
     }
 
-    public IEnumerable<IContractableProvider<T>> GetProviderSet<T>() => _source.GetProviderSet<T>();
+    public IEnumerable<IContractableProvider<T>> GetProviderSet<T>() => _source.GetContractableProviders<T>();
 
     public object? GetService(Type serviceType) => _source.GetService(serviceType);
 }

@@ -1,7 +1,9 @@
 
 namespace Nemonuri.Composition;
 
+using Primitives;
+
 public interface IComponentServiceProvider : IServiceProvider
 {
-    IEnumerable<IContractableProvider<T>> GetProviderSet<T>();
+    IEnumerable<IContractableProvider> GetContractableProviders(Type type);
 }

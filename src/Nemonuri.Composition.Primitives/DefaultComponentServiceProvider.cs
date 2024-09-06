@@ -56,7 +56,7 @@ public partial class DefaultComponentServiceProvider : IComponentServiceProvider
         return tryGetSuccessed ? outLazy!.Value : null;
     }
 
-    public IEnumerable<IContractableProvider<T>> GetProviderSet<T>()
+    public IEnumerable<IContractableProvider<T>> GetContractableProviders<T>()
     {
         var psd = ProviderSetDictionary; // Ensure Initialized
 
