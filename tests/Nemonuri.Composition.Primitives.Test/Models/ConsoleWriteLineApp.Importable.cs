@@ -4,7 +4,7 @@ partial class ConsoleWriteLineApp
 {
     public static class Importable
     {
-        public readonly static IComponentServiceReceiver<string, int> Param0 = new DefaultComponentServiceReceiver<string, int>(0);
+        public readonly static IComponentServiceReceiver<string, int> Param0 = new DefaultContractableReceiver<string>(0);
 
         public readonly static IComponentServiceReceiver<string, int> Param1 = new DefaultComponentServiceReceiver<string, int>(1);
 

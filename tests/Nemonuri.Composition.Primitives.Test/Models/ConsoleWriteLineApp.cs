@@ -1,7 +1,11 @@
+using Nemonuri.Composition.Infrastructure;
+
 namespace Nemonuri.Composition.Test.Models;
 
-public partial class ConsoleWriteLineApp
+public partial class ConsoleWriteLineApp : IComponentServiceReceiver
 {
+    private readonly DefaultComponentServiceReceiver _receiver;
+
     public ConsoleWriteLineApp(IComponentServiceProvider? provider)
     {
         if (provider == null) {return;}
@@ -33,4 +37,6 @@ public partial class ConsoleWriteLineApp
         builderConfig?.Invoke(builder);
         return builder.Build();
     }
+
+    public IEnumerable<IContractableReceiver> ContractableReceivers => throw new NotImplementedException();
 }
