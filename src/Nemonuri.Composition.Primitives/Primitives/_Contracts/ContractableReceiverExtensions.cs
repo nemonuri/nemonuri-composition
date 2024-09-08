@@ -1,4 +1,4 @@
-namespace Nemonuri.Composition.Primitives;
+namespace Nemonuri.Composition.Infrastructure;
 
 public static class ContractableReceiverExtensions
 {
