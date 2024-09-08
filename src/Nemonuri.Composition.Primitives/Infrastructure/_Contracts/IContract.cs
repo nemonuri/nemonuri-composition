@@ -2,7 +2,7 @@ namespace Nemonuri.Composition.Infrastructure;
 
 public interface IContract
 {
-    Type Type {get;}
+    Type TypeContract {get;}
 
     object? AdditionalContract {get;}
 }

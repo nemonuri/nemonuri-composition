@@ -10,7 +10,7 @@ public static class ContractOperation
         Guard.IsNotNull(received);
 
         return
-            TypeContractMatches(required.Type, received.Type) &&
+            TypeContractMatches(required.TypeContract, received.TypeContract) &&
             AdditionalContractMatches(required.AdditionalContract, received.AdditionalContract, contractEqualityComparer);
     }
 

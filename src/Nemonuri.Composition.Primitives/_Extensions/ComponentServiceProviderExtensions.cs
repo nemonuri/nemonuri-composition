@@ -21,7 +21,7 @@ public static class ComponentServiceProviderExtensions
     {
         Guard.IsNotNull(provider);
 
-        foreach(IContractableProvider<T> pv in provider.GetContractableProviders<T>())
+        foreach(IContractableProvider<T> pv in provider.GetContractableProvidersByTypeContract<T>())
         {
             if (predicate?.Invoke(pv) ?? true)
             {
@@ -35,7 +35,7 @@ public static class ComponentServiceProviderExtensions
     {
         Guard.IsNotNull(provider);
 
-        foreach(IContractableProvider<T> pv in provider.GetContractableProviders<T>())
+        foreach(IContractableProvider<T> pv in provider.GetContractableProvidersByTypeContract<T>())
         {
             if (contract == null)
             {
