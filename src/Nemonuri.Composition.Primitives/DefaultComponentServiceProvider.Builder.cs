@@ -3,19 +3,19 @@ partial class DefaultComponentServiceProvider
 {
     public class Builder
     {
-        private readonly Dictionary<Type, Lazy<object>> _providerDictionary;
+        private readonly Dictionary<Type, Lazy<IContractableProvider>> _providerDictionary;
 
         internal Builder()
         {
             _providerDictionary = new ();
         }
 
-        internal Builder(Dictionary<Type, Lazy<object>> providerDictionary)
+        internal Builder(Dictionary<Type, Lazy<IContractableProvider>> providerDictionary)
         {
             Guard.IsNotNull(providerDictionary);
             lock (providerDictionary)
             {
-                _providerDictionary = new Dictionary<Type, Lazy<object>>(providerDictionary);   // Do swallow copy to '_providerDictionary'
+                _providerDictionary = new Dictionary<Type, Lazy<IContractableProvider>>(providerDictionary);   // Do swallow copy to '_providerDictionary'
             }
         }
 
@@ -23,7 +23,7 @@ partial class DefaultComponentServiceProvider
             where TProvider : IContractableProvider<T>
         {
             Guard.IsNotNull(providerFactory);
-            _providerDictionary.Add(typeof(TProvider), new Lazy<object>(providerFactory));
+            _providerDictionary.Add(typeof(TProvider), new Lazy<IContractableProvider>(() => providerFactory.Invoke()));
             return this;
         }
 
@@ -31,7 +31,7 @@ partial class DefaultComponentServiceProvider
             where TProvider : IContractableProvider<T>
         {
             Guard.IsNotNull(providerFactory);
-            return _providerDictionary.TryAdd(typeof(TProvider), new Lazy<object>(providerFactory));
+            return _providerDictionary.TryAdd(typeof(TProvider), new Lazy<IContractableProvider>(() => providerFactory.Invoke()));
         }
 
         //TODO: Remove, TryRemove, Clear

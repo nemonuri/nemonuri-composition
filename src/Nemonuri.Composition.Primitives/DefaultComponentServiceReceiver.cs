@@ -1,24 +1,20 @@
+
+using System.Collections.Immutable;
+
 namespace Nemonuri.Composition;
 
-public class DefaultComponentServiceReceiver<T> : IComponentServiceReceiver<T, object>
+public class DefaultComponentServiceReceiver : IComponentServiceReceiver
 {
-    public DefaultComponentServiceReceiver() {}
+    private readonly ImmutableArray<IContractableReceiver> _contractableReceivers;
 
-    public object? Contract => null;
-    public IEqualityComparer<object>? ContractEqualityComparer => null;
-}
-
-public class DefaultComponentServiceReceiver<T, TContract> : IComponentServiceReceiver<T, TContract>
-{
-    public DefaultComponentServiceReceiver(): this(default, null)
+    public DefaultComponentServiceReceiver():this([])
     {}
 
-    public DefaultComponentServiceReceiver(TContract? contract, IEqualityComparer<TContract>? contractEqualityComparer = null)
+    public DefaultComponentServiceReceiver(IEnumerable<IContractableReceiver> contractableReceivers)
     {
-        Contract = contract;
-        ContractEqualityComparer = contractEqualityComparer;
+        Guard.IsNotNull(contractableReceivers);
+        _contractableReceivers = contractableReceivers.ToImmutableArray();
     }
 
-    public TContract? Contract { get; }
-    public IEqualityComparer<TContract>? ContractEqualityComparer { get; }
+    public IEnumerable<IContractableReceiver> ContractableReceivers => _contractableReceivers;
 }

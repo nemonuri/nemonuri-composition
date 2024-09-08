@@ -3,15 +3,13 @@ using System.Collections.Immutable;
 
 namespace Nemonuri.Composition;
 
-using Primitives;
-
 public partial class DefaultComponentServiceProvider : IComponentServiceProvider
 {
     public static Builder CreateBuilder() => new ();
 
-    private readonly Dictionary<Type, Lazy<object>> _providerDictionary;
+    private readonly Dictionary<Type, Lazy<IContractableProvider>> _providerDictionary;
 
-    private DefaultComponentServiceProvider(Dictionary<Type, Lazy<object>> providerDictionary)
+    private DefaultComponentServiceProvider(Dictionary<Type, Lazy<IContractableProvider>> providerDictionary)
     {
         Guard.IsNotNull(providerDictionary);
         _providerDictionary = providerDictionary;
@@ -34,19 +32,19 @@ public partial class DefaultComponentServiceProvider : IComponentServiceProvider
         return keys;
     }
 
-    private Dictionary<Type, IEnumerable>? _providerSetDictionary;
-    private Dictionary<Type, IEnumerable> ProviderSetDictionary =>
+    private Dictionary<Type, IEnumerable<IContractableProvider>>? _providerSetDictionary;
+    private Dictionary<Type, IEnumerable<IContractableProvider>> ProviderSetDictionary =>
         _providerSetDictionary ?? Interlocked.CompareExchange(ref _providerSetDictionary, CreateProviderSetDictionary(), null) ?? _providerSetDictionary;
 
-    private Dictionary<Type, IEnumerable> CreateProviderSetDictionary()
+    private Dictionary<Type, IEnumerable<IContractableProvider>> CreateProviderSetDictionary()
     {
-        return new Dictionary<Type, IEnumerable>();
+        return new Dictionary<Type, IEnumerable<IContractableProvider>>();
     }
 
     public object? GetService(Type serviceType)
     {
         bool tryGetSuccessed;
-        Lazy<object>? outLazy;
+        Lazy<IContractableProvider>? outLazy;
 
         lock (_providerDictionary)
         {
@@ -56,43 +54,43 @@ public partial class DefaultComponentServiceProvider : IComponentServiceProvider
         return tryGetSuccessed ? outLazy!.Value : null;
     }
 
-    public IEnumerable<IContractableProvider<T>> GetContractableProviders<T>()
+    public IEnumerable<IContractableProvider> GetContractableProvidersByTypeContract(Type typeContract)
     {
         var psd = ProviderSetDictionary; // Ensure Initialized
 
         bool tryGetSuccessed;
-        IEnumerable? outCollection;
+        IEnumerable<IContractableProvider>? outCollection;
 
         lock (psd)
         {
-            tryGetSuccessed = psd.TryGetValue(typeof(T), out outCollection);
+            tryGetSuccessed = psd.TryGetValue(typeContract, out outCollection);
         }
 
-        if (tryGetSuccessed && outCollection is IEnumerable<IContractableProvider<T>> vProviders)
+        if (tryGetSuccessed && outCollection is IEnumerable<IContractableProvider> vProviders)
         {
             return vProviders;
         }
 
-        ImmutableHashSet<IContractableProvider<T>>.Builder? builder = null;
+        ImmutableHashSet<IContractableProvider>.Builder? builder = null;
         foreach (Type key in ProviderDictionaryKeys)
         {
             if 
             (
-                typeof(IContractableProvider<T>).IsAssignableFrom(key) &&
-                GetService(key) is IContractableProvider<T> vProvider
+                GetService(key) is IContractableProvider vProvider &&
+                vProvider.TypeContract == typeContract
             )
             {
-                builder ??= ImmutableHashSet.CreateBuilder<IContractableProvider<T>>();
+                builder ??= ImmutableHashSet.CreateBuilder<IContractableProvider>();
                 builder.Add(vProvider);
             }
         }
 
         if (builder != null)
         {
-            ImmutableHashSet<IContractableProvider<T>> immutableHashSet = builder.ToImmutable();
+            ImmutableHashSet<IContractableProvider> immutableHashSet = builder.ToImmutable();
             lock (psd)
             {
-                psd.TryAdd(typeof(T), immutableHashSet);
+                psd.TryAdd(typeContract, immutableHashSet);
             }
             return immutableHashSet;
         }
