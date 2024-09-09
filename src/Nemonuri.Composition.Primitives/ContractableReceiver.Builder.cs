@@ -4,7 +4,7 @@ namespace Nemonuri.Composition;
 
 public partial class ContractableReceiver<T>
 {
-    public class Builder
+    public class Builder : IContractableReceiverBuilder<T>
     {
         public Builder() {}
         
@@ -50,5 +50,17 @@ public partial class ContractableReceiver<T>
                     );
             }
         }
+
+        IContractableReceiverBuilder<T> IContractableReceiverBuilder<T>.WithOnReceivedCallback(Action<object?, T?>? value) =>
+            WithOnReceivedCallback(value);
+
+        IContractableReceiverBuilder<T> IContractableReceiverBuilder<T>.WithAdditionalContract(object? value) =>
+            WithAdditionalContract(value);
+
+        IContractableReceiverBuilder<T> IContractableReceiverBuilder<T>.WithAdditionalContractEqualityComparer(IEqualityComparer? value) =>
+            WithAdditionalContractEqualityComparer(value);
+
+        IContractableReceiver<T>? IContractableReceiverBuilder<T>.BuildOrNull() =>
+            BuildOrNull();
     }
 }
