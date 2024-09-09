@@ -1,3 +1,4 @@
+using Nemonuri.Composition.Infrastructure;
 
 namespace Nemonuri.Composition.Test.Models;
 
@@ -28,7 +29,8 @@ public partial class ConsoleWriteLineAppAddOn : IComponentServiceProvider
             ;
     }
 
-    public IEnumerable<IContractableProvider<T>> GetProviderSet<T>() => _source.GetContractableProviders<T>();
-
+    public IEnumerable<IContractableProvider> GetContractableProvidersByTypeContract(Type typeContract) =>
+        _source.GetContractableProvidersByTypeContract(typeContract);
+        
     public object? GetService(Type serviceType) => _source.GetService(serviceType);
 }

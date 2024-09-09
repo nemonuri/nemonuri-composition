@@ -18,5 +18,5 @@ public class DefaultContractableProvider<T> : IContractableProvider<T>
     public object? AdditionalContract {get;}
 
     public T Get() => _value;
-    object IProvider.Get() => Get() ?? ThrowHelper.ThrowInvalidOperationException<object>(/* TODO: Fill */);
+    object IProvider.Get() => Get()!;
 }

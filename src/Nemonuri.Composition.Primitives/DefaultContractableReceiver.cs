@@ -3,8 +3,10 @@ using System.Collections;
 
 namespace Nemonuri.Composition;
 
-public class DefaultContractableReceiver<T> : IContractableReceiver<T>
+public partial class DefaultContractableReceiver<T> : IContractableReceiver<T>
 {
+    public static Builder CreateBuilder() => new Builder();
+    
     public Type TypeContract => typeof(T);
 
     public readonly Action<object?, T> _onReceivedCallback;

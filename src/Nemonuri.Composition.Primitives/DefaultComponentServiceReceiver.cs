@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 
 namespace Nemonuri.Composition;
 
-public class DefaultComponentServiceReceiver : IComponentServiceReceiver
+public partial class DefaultComponentServiceReceiver : IComponentServiceReceiver
 {
     private readonly ImmutableArray<IContractableReceiver> _contractableReceivers;
 
