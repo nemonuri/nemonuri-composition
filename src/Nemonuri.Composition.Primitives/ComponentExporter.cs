@@ -1,15 +1,14 @@
-using System.Collections;
 using System.Collections.Immutable;
 
 namespace Nemonuri.Composition;
 
-public partial class DefaultComponentServiceProvider : IComponentServiceProvider
+public partial class ComponentExporter : IComponentExporter
 {
     public static Builder CreateBuilder() => new ();
 
     private readonly Dictionary<Type, Lazy<IContractableProvider>> _providerDictionary;
 
-    private DefaultComponentServiceProvider(Dictionary<Type, Lazy<IContractableProvider>> providerDictionary)
+    private ComponentExporter(Dictionary<Type, Lazy<IContractableProvider>> providerDictionary)
     {
         Guard.IsNotNull(providerDictionary);
         _providerDictionary = providerDictionary;

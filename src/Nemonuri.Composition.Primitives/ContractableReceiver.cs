@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Nemonuri.Composition;
 
-public partial class DefaultContractableReceiver<T> : IContractableReceiver<T>
+public partial class ContractableReceiver<T> : IContractableReceiver<T>
 {
     public static Builder CreateBuilder() => new Builder();
     
@@ -11,7 +11,7 @@ public partial class DefaultContractableReceiver<T> : IContractableReceiver<T>
 
     public readonly Action<object?, T?> _onReceivedCallback;
 
-    public DefaultContractableReceiver(Action<object?, T?> onReceivedCallback, object? additionalContract = null, IEqualityComparer? additionalContractEqualityComparer = null)
+    public ContractableReceiver(Action<object?, T?> onReceivedCallback, object? additionalContract = null, IEqualityComparer? additionalContractEqualityComparer = null)
     {
         Guard.IsNotNull(onReceivedCallback);
         _onReceivedCallback = onReceivedCallback;

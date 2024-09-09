@@ -2,9 +2,9 @@ using Nemonuri.Composition.Infrastructure;
 
 namespace Nemonuri.Composition.Test.Models;
 
-public partial class ConsoleWriteLineAppAddOn : IComponentServiceProvider
+public partial class ConsoleWriteLineAppAddOn : IComponentExporter
 {
-    private readonly DefaultComponentServiceProvider _source;
+    private readonly ComponentExporter _source;
 
     public ConsoleWriteLineAppAddOn
     (
@@ -17,7 +17,7 @@ public partial class ConsoleWriteLineAppAddOn : IComponentServiceProvider
         string? vComponentA5 = null
     )
     {
-        _source = DefaultComponentServiceProvider.CreateBuilder()
+        _source = ComponentExporter.CreateBuilder()
             .Add<Exportable.ComponentANull, string?>(() => new (vComponentANull))
             .Add<Exportable.ComponentA0, string?>(() => new (vComponentA0))
             .Add<Exportable.ComponentA1, string?>(() => new (vComponentA1))

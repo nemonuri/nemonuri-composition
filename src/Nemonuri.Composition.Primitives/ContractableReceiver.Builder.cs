@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace Nemonuri.Composition;
 
-public partial class DefaultContractableReceiver<T>
+public partial class ContractableReceiver<T>
 {
     public class Builder
     {
@@ -34,7 +34,7 @@ public partial class DefaultContractableReceiver<T>
         }
 
 
-        public DefaultContractableReceiver<T>? BuildOrNull()
+        public ContractableReceiver<T>? BuildOrNull()
         {
             if (OnReceivedCallback == null)
             {
@@ -42,7 +42,7 @@ public partial class DefaultContractableReceiver<T>
             }
             else
             {
-                return new DefaultContractableReceiver<T>
+                return new ContractableReceiver<T>
                     (
                         OnReceivedCallback,
                         AdditionalContract,

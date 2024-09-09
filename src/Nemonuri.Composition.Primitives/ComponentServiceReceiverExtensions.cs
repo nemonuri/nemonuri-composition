@@ -1,8 +1,8 @@
-namespace Nemonuri.Composition.Infrastructure;
+namespace Nemonuri.Composition;
 
 public static class ComponentServiceReceiverExtensions
 {
-    public static void Import(this IComponentServiceReceiver receiver, IComponentServiceProvider provider)
+    public static void Import(this IComponentImporter receiver, IComponentExporter provider)
     {
         Guard.IsNotNull(receiver);
         Guard.IsNotNull(provider);
@@ -19,7 +19,7 @@ public static class ComponentServiceReceiverExtensions
         }
     }
 
-    public static void ImportIfBooleanSwitchFalse(this IComponentServiceReceiver receiver, IComponentServiceProvider provider, ref bool booleanSwitch)
+    public static void ImportIfBooleanSwitchFalse(this IComponentImporter receiver, IComponentExporter provider, ref bool booleanSwitch)
     {
         if (booleanSwitch)
         {

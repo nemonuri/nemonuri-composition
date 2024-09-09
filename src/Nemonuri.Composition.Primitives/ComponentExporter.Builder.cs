@@ -1,5 +1,5 @@
 namespace Nemonuri.Composition;
-partial class DefaultComponentServiceProvider
+partial class ComponentExporter
 {
     public class Builder
     {
@@ -46,7 +46,7 @@ partial class DefaultComponentServiceProvider
 
         public ICollection<Type> Keys => _providerDictionary.Keys;
 
-        public DefaultComponentServiceProvider Build() =>
-            new DefaultComponentServiceProvider(_providerDictionary);
+        public ComponentExporter Build() =>
+            new ComponentExporter(_providerDictionary);
     }
 }

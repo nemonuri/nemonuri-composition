@@ -3,7 +3,7 @@ using System.Collections.Immutable;
 
 namespace Nemonuri.Composition;
 
-public partial class DefaultComponentServiceReceiver
+public partial class ComponentImporter
 {
     public static Builder CreateBuilder() => new Builder();
 
@@ -30,9 +30,9 @@ public partial class DefaultComponentServiceReceiver
             return this;
         }
 
-        public DefaultComponentServiceReceiver Build()
+        public ComponentImporter Build()
         {
-            return new DefaultComponentServiceReceiver(_innerArrayBuilder);
+            return new ComponentImporter(_innerArrayBuilder);
         }
     }
 }

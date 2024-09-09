@@ -1,4 +1,4 @@
-namespace Nemonuri.Composition.Infrastructure;
+namespace Nemonuri.Composition;
 
 public interface IContractableProvider : IContract, IProvider
 {

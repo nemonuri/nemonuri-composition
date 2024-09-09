@@ -2,11 +2,11 @@ using Nemonuri.Composition.Infrastructure;
 
 namespace Nemonuri.Composition.Test.Models;
 
-public partial class ConsoleWriteLineApp : IComponentServiceReceiver
+public partial class ConsoleWriteLineApp : IComponentImporter
 {
-    private readonly DefaultComponentServiceReceiver _importer;
+    private readonly ComponentImporter _importer;
 
-    public ConsoleWriteLineApp(Func<IConsoleWriteLineAppSettingFacade, ConsoleWriteLineAppImporterBuilder, DefaultComponentServiceReceiver>? alterImporterBuilder)
+    public ConsoleWriteLineApp(Func<IConsoleWriteLineAppSettingFacade, ConsoleWriteLineAppImporterBuilder, ComponentImporter>? alterImporterBuilder)
     {
         if (alterImporterBuilder != null)
         {
@@ -25,7 +25,7 @@ public partial class ConsoleWriteLineApp : IComponentServiceReceiver
     public string? Param0 {get; set;}
     public string? Param1 {get; set;}
     public string? Param2 {get; set;}
-    IEnumerable<IContractableReceiver> IComponentServiceReceiver.ContractableReceivers => _importer.ContractableReceivers;
+    IEnumerable<IContractableReceiver> IComponentImporter.ContractableReceivers => _importer.ContractableReceivers;
 
     public string? GetParam(int id) =>
         id switch 
@@ -36,12 +36,12 @@ public partial class ConsoleWriteLineApp : IComponentServiceReceiver
             _ => throw new IndexOutOfRangeException()
         };
 
-    public static IComponentServiceProvider CreateComponentServiceProvider
+    public static IComponentExporter CreateComponentServiceProvider
     (
-        Action<DefaultComponentServiceProvider.Builder>? builderConfig = null
+        Action<ComponentExporter.Builder>? builderConfig = null
     )
     {
-        var builder = DefaultComponentServiceProvider.CreateBuilder();
+        var builder = ComponentExporter.CreateBuilder();
         builderConfig?.Invoke(builder);
         return builder.Build();
     }

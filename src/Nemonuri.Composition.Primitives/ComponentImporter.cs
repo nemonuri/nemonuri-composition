@@ -3,14 +3,14 @@ using System.Collections.Immutable;
 
 namespace Nemonuri.Composition;
 
-public partial class DefaultComponentServiceReceiver : IComponentServiceReceiver
+public partial class ComponentImporter : IComponentImporter
 {
     private readonly ImmutableArray<IContractableReceiver> _contractableReceivers;
 
-    public DefaultComponentServiceReceiver():this([])
+    public ComponentImporter():this([])
     {}
 
-    public DefaultComponentServiceReceiver(IEnumerable<IContractableReceiver> contractableReceivers)
+    public ComponentImporter(IEnumerable<IContractableReceiver> contractableReceivers)
     {
         Guard.IsNotNull(contractableReceivers);
         _contractableReceivers = contractableReceivers.ToImmutableArray();

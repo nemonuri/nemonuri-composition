@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Nemonuri.Composition.Infrastructure;
+namespace Nemonuri.Composition;
 
 public interface IContractableReceiver : IContract, IReceiver
 {
