@@ -1,10 +1,8 @@
-using Nemonuri.Composition.Infrastructure;
-
 namespace Nemonuri.Composition.Test.Models;
 
 public partial class ConsoleWriteLineAppAddOn : IComponentExporter
 {
-    private readonly ComponentExporter _source;
+    private readonly ComponentExporter _InnerExporter;
 
     public ConsoleWriteLineAppAddOn
     (
@@ -17,7 +15,7 @@ public partial class ConsoleWriteLineAppAddOn : IComponentExporter
         string? vComponentA5 = null
     )
     {
-        _source = ComponentExporter.CreateBuilder()
+        _InnerExporter = ComponentExporter.CreateBuilder()
             .Add<Exportable.ComponentANull, string?>(() => new (vComponentANull))
             .Add<Exportable.ComponentA0, string?>(() => new (vComponentA0))
             .Add<Exportable.ComponentA1, string?>(() => new (vComponentA1))
@@ -30,7 +28,7 @@ public partial class ConsoleWriteLineAppAddOn : IComponentExporter
     }
 
     public IEnumerable<IContractableProvider> GetContractableProvidersByTypeContract(Type typeContract) =>
-        _source.GetContractableProvidersByTypeContract(typeContract);
+        _InnerExporter.GetContractableProvidersByTypeContract(typeContract);
         
-    public object? GetService(Type serviceType) => _source.GetService(serviceType);
+    public object? GetService(Type serviceType) => _InnerExporter.GetService(serviceType);
 }

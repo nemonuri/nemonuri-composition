@@ -1,16 +1,14 @@
-using Nemonuri.Composition.Infrastructure;
-
 namespace Nemonuri.Composition.Test.Models;
 
 public partial class ConsoleWriteLineApp : IComponentImporter
 {
-    private readonly ComponentImporter _importer;
+    private readonly ComponentImporter _innerImporter;
 
     public ConsoleWriteLineApp(Func<IConsoleWriteLineAppSettingFacade, ConsoleWriteLineAppImporterBuilder, ComponentImporter>? alterImporterBuilder)
     {
         if (alterImporterBuilder != null)
         {
-            _importer = alterImporterBuilder.Invoke(new SettingFacade(this), new ConsoleWriteLineAppImporterBuilder());
+            _innerImporter = alterImporterBuilder.Invoke(new SettingFacade(this), new ConsoleWriteLineAppImporterBuilder());
         }
         else
         {
@@ -18,14 +16,14 @@ public partial class ConsoleWriteLineApp : IComponentImporter
             builder.Param0.WithOnReceivedCallback((_, v) => {Param0 = v;});
             builder.Param1.WithOnReceivedCallback((_, v) => {Param1 = v;});
             builder.Param2.WithOnReceivedCallback((_, v) => {Param2 = v;});
-            _importer = builder.Build();
+            _innerImporter = builder.Build();
         }
     }
 
     public string? Param0 {get; set;}
     public string? Param1 {get; set;}
     public string? Param2 {get; set;}
-    IEnumerable<IContractableReceiver> IComponentImporter.ContractableReceivers => _importer.ContractableReceivers;
+    IEnumerable<IContractableReceiver> IComponentImporter.ContractableReceivers => _innerImporter.ContractableReceivers;
 
     public string? GetParam(int id) =>
         id switch 
