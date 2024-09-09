@@ -8,14 +8,14 @@ public partial class DefaultContractableReceiver<T>
     {
         public Builder() {}
         
-        public Action<object?, T>? OnReceivedCallback {get;set;}
+        public Action<object?, T?>? OnReceivedCallback {get;set;}
         
         public object? AdditionalContract {get;set;}
 
         public IEqualityComparer? AdditionalContractEqualityComparer {get;set;}
 
 
-        public Builder WithOnReceivedCallback(Action<object?, T>? value)
+        public Builder WithOnReceivedCallback(Action<object?, T?>? value)
         {
             OnReceivedCallback = value;
             return this;
