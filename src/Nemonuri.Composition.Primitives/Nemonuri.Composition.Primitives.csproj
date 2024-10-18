@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nemonuri.Common.Primitives" Version="0.0.211" />
+    <PackageReference Include="Nemonuri.Common.Primitives" Version="*" />
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
