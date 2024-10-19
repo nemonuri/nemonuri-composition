@@ -8,7 +8,7 @@ public interface IComponentCollectionProvider : IServiceProvider
     IEnumerable<T> GetComponents<T>(Func<T, bool>? predicate);
 }
 
-public interface IComponentCollectionProvider<T> : IComponentCollectionProvider, ICollectionProvider<T>
+public interface IComponentCollectionProvider<T> : IComponentCollectionProvider
 {
     IEnumerable<T> GetComponents(Func<T, bool>? predicate);
 }
