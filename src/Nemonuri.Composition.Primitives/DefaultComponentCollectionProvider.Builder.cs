@@ -7,13 +7,13 @@ partial class DefaultComponentCollectionProvider
         private Dictionary<Type, IServiceProvider> _providers = new();
         private Dictionary<Type, IServiceProvider> _collectionProviders = new();
 
-        public IComponentCollectionProviderBuilder AddProvider<T>(IComponentProvider<T> provider)
+        public IComponentCollectionProviderBuilder AddComponentProvider<T>(IComponentProvider<T> provider)
         {
             _providers.Add(typeof(T), provider);
             return this;
         }
 
-        public IComponentCollectionProviderBuilder AddCollectionProvider<T>(IComponentCollectionProvider<T> provider)
+        public IComponentCollectionProviderBuilder AddComponentCollectionProvider<T>(IComponentCollectionProvider<T> provider)
         {
             _collectionProviders.Add(typeof(T), provider);
             return this;

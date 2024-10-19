@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Package Metadata">
-    <Version>0.0.104</Version>
+    <Version>0.0.105</Version>
   </PropertyGroup>
 
   <Import Project="$(MSBuildThisFileDirectory)..\Directory.Pack.props" />

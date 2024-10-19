@@ -10,5 +10,5 @@ public interface IComponentCollectionProvider : IServiceProvider
 
 public interface IComponentCollectionProvider<T> : IComponentCollectionProvider
 {
-    IEnumerable<T> GetComponents(Func<T, bool>? predicate);
+    IEnumerable<T> GetComponents();
 }

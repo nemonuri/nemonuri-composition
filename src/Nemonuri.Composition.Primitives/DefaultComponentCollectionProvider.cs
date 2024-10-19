@@ -24,8 +24,8 @@ internal partial class DefaultComponentCollectionProvider : IComponentCollection
         {
             if 
             (
-                (provider is IProvider<T> tProvider) &&
-                (tProvider.Get() is { } t) &&
+                (provider is IComponentProvider<T> tProvider) &&
+                (tProvider.GetComponent() is { } t) &&
                 (predicate?.Invoke(t) ?? true)
             )
             {
@@ -37,8 +37,8 @@ internal partial class DefaultComponentCollectionProvider : IComponentCollection
         {
             if 
             (
-                (collectionProvider is ICollectionProvider<T> tCollectionProvider) &&
-                (tCollectionProvider.GetCollection() is { } tCollection) &&
+                (collectionProvider is IComponentCollectionProvider<T> tCollectionProvider) &&
+                (tCollectionProvider.GetComponents() is { } tCollection) &&
                 (
                     (predicate == null ? tCollection.FirstOrDefault() : tCollection.FirstOrDefault(predicate)) is { } t
                 )
