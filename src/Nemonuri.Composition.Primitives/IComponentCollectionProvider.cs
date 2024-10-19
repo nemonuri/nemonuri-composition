@@ -4,11 +4,11 @@ namespace Nemonuri.Composition;
 
 public interface IComponentCollectionProvider : IServiceProvider
 {
-    T? GetFirst<T>(Func<T, bool>? predicate);
-    IEnumerable<T> Get<T>(Func<T, bool>? predicate);
+    T? GetFirstComponent<T>(Func<T, bool>? predicate);
+    IEnumerable<T> GetComponents<T>(Func<T, bool>? predicate);
 }
 
 public interface IComponentCollectionProvider<T> : IComponentCollectionProvider, ICollectionProvider<T>
 {
-    IEnumerable<T> Get(Func<T, bool>? predicate);
+    IEnumerable<T> GetComponents(Func<T, bool>? predicate);
 }

@@ -18,7 +18,7 @@ internal partial class DefaultComponentCollectionProvider : IComponentCollection
         _collectionProviderDict = collectionProviders;
     }
 
-    public T? GetFirst<T>(Func<T, bool>? predicate)
+    public T? GetFirstComponent<T>(Func<T, bool>? predicate)
     {
         if(_providerDict.TryGetValue(typeof(T), out IServiceProvider? provider))
         {
@@ -51,7 +51,7 @@ internal partial class DefaultComponentCollectionProvider : IComponentCollection
         return default;
     }
 
-    public IEnumerable<T> Get<T>(Func<T, bool>? predicate)
+    public IEnumerable<T> GetComponents<T>(Func<T, bool>? predicate)
     {
         if(_providerDict.TryGetValue(typeof(T), out IServiceProvider? provider))
         {
@@ -89,7 +89,7 @@ internal partial class DefaultComponentCollectionProvider : IComponentCollection
         }
     }
 
-    [RequiresDynamicCode("GetService requires reflection")]
+    [RequiresDynamicCode("DefaultComponentCollectionProvider.GetService requires reflection")]
     public object? GetService(Type serviceType)
     {
         {
