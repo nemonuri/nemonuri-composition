@@ -16,11 +16,7 @@ namespace System.Diagnostics.CodeAnalysis
     /// This allows tools to understand which methods are unsafe to call when compiling ahead of time.
     /// </remarks>
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Class, Inherited = false)]
-#if SYSTEM_PRIVATE_CORELIB
     public
-#else
-    internal
-#endif
     sealed class RequiresDynamicCodeAttribute : Attribute
     {
         /// <summary>
